@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  worker:
+    build:
+      context: .
+      dockerfile: ./vector_db_etl_service/worker/Dockerfile
+    command: gunicorn vector_db_etl_service.worker.main:app --workers 10 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80
+    ports:
+      - "8771:80"
+    environment:
+      - PYTHONPATH=/app
+      - PROMETHEUS_MULTIPROC_DIR=/tmp/prometheus
+    volumes:
+      - ./vector_db_etl_service:/app/vector_db_etl_service
+      - /tmp/prometheus:/tmp/prometheus
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:v1.11.1
+    container_name: qdrant
+    deploy:
+      mode: global
+      resources:
+        limits:
+          cpus: "48"
+          memory: "500000M"
+        reservations:
+          cpus: "48"
+          memory: "480000M"
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 30s
+    environment:
+      - OPENAI_API_KEY=""
+      # QDRANT__SERVICE__READ_ONLY_API_KEY: ${QDRANT_READ_ONLY_API_KEY}
+      # QDRANT__SERVICE__API_KEY: ${QDRANT__SERVICE__API_KEY}
+    platform: "linux/amd64"
+    ports:
+      - "6333:6333"  # "127.0.0.1:6333:6333" to allow access from the host machine only
+      - "6334:6334"
+    volumes:
+      - ./qdrant/qdrant_storage:/qdrant/storage

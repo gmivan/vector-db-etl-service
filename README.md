@@ -47,7 +47,7 @@ The system consists of four main components:
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/gmivan/vector-db-etl-service.git
 cd vector-db-etl-service
 ```
 

@@ -68,7 +68,14 @@ npm install -g pm2
 ```
 
 ## Configuration
-Configure PM2 services:
+1. Create a `.env` file with the following variables:
+ ```env
+ API_URL=http://127.0.0.1:6333
+ INDEX_NAME=my_index
+ USERNAME=admin
+ DB_PASSWORD=admin
+ ```
+2. Configure PM2 services:
 - `etl_pipeline.config.js` - ETL pipeline configuration
 - `db_service_server.config.js` - API server configuration
 

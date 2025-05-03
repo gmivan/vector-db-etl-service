@@ -13,12 +13,6 @@ from typing import List, Dict, Any
 # Load environment variables
 dotenv.load_dotenv()
 
-# Constants
-API_URL = os.getenv("API_URL", "http://127.0.0.1:14920")
-INDEX_NAME = os.getenv("INDEX_NAME", "omega")
-USERNAME = os.getenv("USERNAME", "admin")
-PASSWORD = os.getenv("OPENSEARCH_PASSWORD")
-
 # Test data
 test_embedding_existing = [0.00714385649189353, -0.013157407753169537, -0.017787616699934006]
 test_embedding_existing_2 = [0.009175444021821022, -0.00456630764529109, 0.0018208998953923583]
